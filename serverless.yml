@@ -1,0 +1,37 @@
+service:
+  name: davidagood-com-ci-pipeline
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs12.x
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    CLOUDFRONT_DISTRIBUTION_ID: E1HREVFE1ASW1W
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource: arn:aws:s3:::davidagoood.com
+    - Effect: Allow
+      Action:
+        - s3:DeleteObject
+      Resource: arn:aws:s3:::davidagood.com/*
+    - Effect: Allow
+      Action:
+        - cloudfront:CreateInvalidation
+      Resource: "arn:aws:cloudfront::*:distribution/${self:provider.environment.CLOUDFRONT_DISTRIBUTION_ID}"
+
+functions:
+  wipe-s3-bucket:
+    handler: src/wipe-s3-bucket.handler
+  invalidate-cf-dist:
+    handler: src/invalidate-cf-dist.handler
