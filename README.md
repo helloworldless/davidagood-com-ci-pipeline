@@ -1,3 +1,5 @@
 # Continuous Integration Pipeline for davidagood.com
 
-Uses Serverless Framework, AWS CodeBuild, and AWS CodePipeline.
+See davidagood.com repo here: https://github.com/helloworldless/davidagood.com
+
+CI has been moved to GitLab: https://gitlab.com/helloworldless/davidagood-com
